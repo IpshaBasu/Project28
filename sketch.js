@@ -5,7 +5,7 @@ const Bodies = Matter.Bodies;
 const Body = Matter.Body;
 const Render = Matter.Render;
 const Constraint=Matter.Constraint;
-var treeObj, stoneObj,groundObject, launcherObject;
+var treeObj, stoneObj,groundObject, launcherObj;
 var mango1, mango2, mango3, mango4, mango5, mango6, mango7, mango8, mango9, mango10;
 var world,boy;
 var launchingForce = 100;
@@ -18,32 +18,24 @@ function setup() {
 	engine = Engine.create();
 	world = engine.world;
 
-	mango1=new mango(1100,100,30);
-	mango2=new mango(1140,130,40);
-	mango3=new mango(1180,160,30);
-	mango4=new mango(1200,190,40);
-	mango5=new mango(1240,210,30);
-	mango6=new mango(1280,240,40);
-	mango7=new mango(1060,270,30);
-	mango8=new mango(1020,300,40);
-	mango9=new mango(980,80,30);
-	mango10=new mango(940,60,40);
+	mango1=new Mango(1100,100,30);
+	mango2=new Mango(1140,130,40);
+	mango3=new Mango(1180,160,30);
+	mango4=new Mango(1200,190,40);
+	mango5=new Mango(1240,210,30);
+	mango6=new Mango(1280,240,40);
+	mango7=new Mango(1060,270,30);
+	mango8=new Mango(1020,300,40);
+	mango9=new Mango(980,80,30);
+	mango10=new Mango(940,60,40);
 
-	stoneObj = new stone(235, 420, 30);
-	treeObj=new tree(1050,580);
-	groundObject=new ground(width/2,600,width,20);
-	launcherObject = new launcher(stoneObj.body,{x:235, y: 420});
-	var render = Render.create({
-		element:document.body,
-		engine:engine,
-		options:{
-			width:1300,
-			height:600,
-			wireframes:false
-		}
-	});
+	stoneObj = new Stone(250, 400, 50);
+	treeObj=new Tree(1050,580);
+	groundObject=new Ground(width/2,600,width,20);
+	launcherObj = new Launcher(stoneObj.body,{x:250, y: 400});
+
 	Engine.run(engine);
-	Render.run(render);
+	//Render.run(render);
 }
 
 function draw() {
@@ -66,7 +58,7 @@ function draw() {
   mango10.display();
   stoneObj.display();
   groundObject.display();
-  launcherObject.display();
+  launcherObj.display();
   detectCollision(stoneObj, mango1);
   detectCollision(stoneObj, mango2);
   detectCollision(stoneObj, mango3);
@@ -82,15 +74,15 @@ function mouseDragged(){
 	Matter.Body.setPosition(stoneObj.body, {x:mouseX, y:mouseY});
 }
 function mouseReleased(){
-	launcherObject.fly();
+	launcherObj.fly();
 }
 function keyPressed(){
 	if(keyCode === 32){
 		Matter.Body.setPosition(stoneObj.body, {x: 235, y: 420});
-		launcherObject.attach(stoneObj.body);
+		launcherObj.attach(stoneObj.body);
 	}
 }
-function detectCollision(){
+function detectCollision(lstone, lmango){
 	mangoBodyPosition = lmango.body.position;
 	stoneBodyPosition = lstone.body.position;
 	
